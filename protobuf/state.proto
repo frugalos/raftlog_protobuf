@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package raftlog.protobuf;
+
+//
+// 投票状況
+//
+message Ballot {
+  uint64 term = 1;
+  string voted_for = 2;
+}
+
+//
+// クラスタ構成
+//
+message ClusterConfig {
+  repeated string new_members = 1;
+  repeated string old_members = 2;
+  ClusterState state = 3;
+}
+
+enum ClusterState {
+  STABLE = 0;
+  CATCH_UP = 1;
+  JOINT = 2;
+}

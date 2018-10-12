@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package raftlog.protobuf;
+
+import "state.proto";
+
+//
+// ログエントリ
+//
+message LogEntry {
+  uint64 term = 1;
+
+  // NOTE: どちらも存在しない場合はnoop扱い
+  oneof data {
+    bytes command = 2;
+    ClusterConfig config = 3;
+  }
+}
+
+message LogPosition {
+  uint64 prev_term = 1;
+  uint64 index = 2;
+}
+
+//
+// スナップショット
+//
+message LogPrefix {
+  reserved 1, 2;
+  ClusterConfig config = 3;
+  bytes snapshot = 4;
+  LogPrefix tail = 5;
+}

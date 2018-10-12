@@ -1,0 +1,19 @@
+[package]
+name = "raftlog_protobuf"
+version = "0.1.0"
+authors = ["The FrugalOS Developers"]
+description = "Encoders and decoders of the Protocol-Buffers messages for the constituents defined in `raftlog` crate"
+homepage = "https://github.com/frugalos/raftlog_protobuf"
+repository = "https://github.com/frugalos/raftlog_protobuf"
+readme = "README.md"
+keywords = ["raft", "protocol-buffers"]
+license = "MIT"
+
+[badges]
+travis-ci = {repository = "frugalos/raftlog_protobuf"}
+
+[dependencies]
+bytecodec = "0.4"
+protobuf_codec = "0.2"
+raftlog = "0.4"
+trackable = "0.2"

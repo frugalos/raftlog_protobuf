@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package raftlog.protobuf;
+
+import "state.proto";
+import "log.proto";
+
+message RequestVoteCall {
+  Header header = 1;
+  LogPosition log_tail = 2;
+}
+
+message RequestVoteReply {
+  Header header = 1;
+  bool voted = 2;
+}
+
+message AppendEntriesCall {
+  Header header = 1;
+  uint64 committed_log_tail = 2;
+
+  // NOTE: `LogSuffix`を使わない理由
+  LogPosition head = 3;
+  repeated LogEntry entries = 4;
+}
+
+message AppendEntriesReply {
+  Header header = 1;
+  LogPosition log_tail = 2;
+  bool busy = 3;
+}
+
+message InstallSnapshotCast {
+  Header header = 1;
+  LogPrefix prefix = 2;
+}
+
+message Header {
+  string sender = 1;
+  string destination = 2;
+  uint64 seq_no = 3;
+  uint64 term = 4;
+}
