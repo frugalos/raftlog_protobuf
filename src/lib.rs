@@ -3,7 +3,7 @@
 //! [`raftlog`]: https://github.com/frugalos/raftlog
 //! [Protocol Buffers]: https://developers.google.com/protocol-buffers/
 #![warn(missing_docs)]
-#![cfg_attr(feature = "cargo-clippy", allow(type_complexity))]
+#![allow(clippy::type_complexity)]
 extern crate bytecodec;
 extern crate protobuf_codec;
 extern crate raftlog;
