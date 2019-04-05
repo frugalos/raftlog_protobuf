@@ -63,11 +63,12 @@ pub struct RequestVoteReplyDecoder {
         )>,
     >,
 }
-impl_message_decode!(
-    RequestVoteReplyDecoder,
-    RequestVoteReply,
-    |(header, voted)| Ok(RequestVoteReply { header, voted })
-);
+impl_message_decode!(RequestVoteReplyDecoder, RequestVoteReply, |(
+    header,
+    voted,
+)| Ok(
+    RequestVoteReply { header, voted }
+));
 
 /// Encoder for `RequestVoteReply` message.
 #[derive(Debug, Default)]
@@ -97,18 +98,21 @@ pub struct AppendEntriesCallDecoder {
         )>,
     >,
 }
-impl_message_decode!(
-    AppendEntriesCallDecoder,
-    AppendEntriesCall,
-    |t: (_, u64, _, _)| Ok(AppendEntriesCall {
+impl_message_decode!(AppendEntriesCallDecoder, AppendEntriesCall, |t: (
+    _,
+    u64,
+    _,
+    _
+)| Ok(
+    AppendEntriesCall {
         header: t.0,
         committed_log_tail: t.1.into(),
         suffix: LogSuffix {
             head: t.2,
             entries: t.3
         }
-    })
-);
+    }
+));
 
 /// Encoder for `AppendEntriesCall` message.
 #[derive(Debug, Default)]
@@ -144,15 +148,17 @@ pub struct AppendEntriesReplyDecoder {
         )>,
     >,
 }
-impl_message_decode!(
-    AppendEntriesReplyDecoder,
-    AppendEntriesReply,
-    |t: (_, _, _)| Ok(AppendEntriesReply {
+impl_message_decode!(AppendEntriesReplyDecoder, AppendEntriesReply, |t: (
+    _,
+    _,
+    _
+)| Ok(
+    AppendEntriesReply {
         header: t.0,
         log_tail: t.1,
         busy: t.2
-    })
-);
+    }
+));
 
 /// Encoder for `AppendEntriesReply` message.
 #[derive(Debug, Default)]
@@ -181,11 +187,12 @@ pub struct InstallSnapshotCastDecoder {
         )>,
     >,
 }
-impl_message_decode!(
-    InstallSnapshotCastDecoder,
-    InstallSnapshotCast,
-    |(header, prefix)| Ok(InstallSnapshotCast { header, prefix })
-);
+impl_message_decode!(InstallSnapshotCastDecoder, InstallSnapshotCast, |(
+    header,
+    prefix,
+)| Ok(
+    InstallSnapshotCast { header, prefix }
+));
 
 /// Encoder for `InstallSnapshotCast` message.
 #[derive(Debug, Default)]
