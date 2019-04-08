@@ -17,3 +17,6 @@ bytecodec = "0.4"
 protobuf_codec = "0.2"
 raftlog = "0.4"
 trackable = "0.2"
+
+[patch.crates-io]
+raftlog = { path = "../raftlog" }
