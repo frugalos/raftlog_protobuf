@@ -51,10 +51,12 @@ pub struct ClusterConfigDecoder {
         )>,
     >,
 }
-impl_message_decode!(
-    ClusterConfigDecoder,
-    ClusterConfig,
-    |t: (Vec<_>, Vec<_>, u32)| Ok(ClusterConfig::with_state(
+impl_message_decode!(ClusterConfigDecoder, ClusterConfig, |t: (
+    Vec<_>,
+    Vec<_>,
+    u32
+)| Ok(
+    ClusterConfig::with_state(
         t.0.into_iter().map(NodeId::from).collect(),
         t.1.into_iter().map(NodeId::from).collect(),
         match t.2 {
@@ -63,8 +65,8 @@ impl_message_decode!(
             2 => ClusterState::Joint,
             n => track_panic!(ErrorKind::InvalidInput, "Unknown cluster state: {}", n),
         }
-    ))
-);
+    )
+));
 
 /// Encoder for `ClusterConfig`.
 #[derive(Debug, Default)]
