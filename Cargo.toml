@@ -1,6 +1,6 @@
 [package]
 name = "raftlog_protobuf"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["The FrugalOS Developers"]
 description = "Encoders and decoders of the Protocol-Buffers messages for the constituents defined in `raftlog` crate"
 homepage = "https://github.com/frugalos/raftlog_protobuf"
@@ -15,5 +15,5 @@ travis-ci = {repository = "frugalos/raftlog_protobuf"}
 [dependencies]
 bytecodec = "0.4"
 protobuf_codec = "0.2"
-raftlog = "0.5"
+raftlog = "0.6"
 trackable = "0.2"
