@@ -10,7 +10,7 @@ use protobuf_codec::message::{MessageDecoder, MessageEncoder};
 use protobuf_codec::scalar::{BytesDecoder, BytesEncoder, Uint64Decoder, Uint64Encoder};
 use raftlog::log::{LogEntry, LogPosition, LogPrefix};
 
-use state::{ClusterConfigDecoder, ClusterConfigEncoder};
+use crate::state::{ClusterConfigDecoder, ClusterConfigEncoder};
 
 /// Decoder for `LogEntry`.
 #[derive(Debug, Default)]
