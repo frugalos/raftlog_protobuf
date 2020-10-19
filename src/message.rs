@@ -15,7 +15,7 @@ use raftlog::message::{
 };
 use raftlog::node::NodeId;
 
-use log::{
+use crate::log::{
     LogEntryDecoder, LogEntryEncoder, LogPositionDecoder, LogPositionEncoder, LogPrefixDecoder,
     LogPrefixEncoder,
 };
