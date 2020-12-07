@@ -1,14 +1,12 @@
 //! Encoders and decoders for the constituents defined in `raftlog::log` module.
 use bytecodec::combinator::PreEncode;
-use protobuf_codec::field::branch::Branch2;
+use protobuf_codec::field::branch::Branch3;
 use protobuf_codec::field::num::{F1, F2, F3, F4, F5};
-use protobuf_codec::field::{
-    FieldDecoder, FieldEncoder, Fields, MaybeDefault, MessageFieldDecoder, MessageFieldEncoder,
-    Oneof, Optional,
-};
+use protobuf_codec::field::{FieldDecoder, FieldEncoder, Fields, MaybeDefault, MessageFieldDecoder, MessageFieldEncoder, Oneof, Optional};
 use protobuf_codec::message::{MessageDecoder, MessageEncoder};
-use protobuf_codec::scalar::{BytesDecoder, BytesEncoder, Uint64Decoder, Uint64Encoder};
+use protobuf_codec::scalar::{BytesDecoder, BytesEncoder, Uint64Decoder, Uint64Encoder, StringDecoder, StringEncoder};
 use raftlog::log::{LogEntry, LogPosition, LogPrefix};
+use raftlog::node::NodeId;
 
 use crate::state::{ClusterConfigDecoder, ClusterConfigEncoder};
 
@@ -22,6 +20,7 @@ pub struct LogEntryDecoder {
                 Oneof<(
                     FieldDecoder<F2, BytesDecoder>,
                     MessageFieldDecoder<F3, ClusterConfigDecoder>,
+                    FieldDecoder<F4, StringDecoder>,
                 )>,
             >,
         )>,
@@ -31,8 +30,9 @@ impl_message_decode!(LogEntryDecoder, LogEntry, |t: (u64, _)| {
     let term = t.0.into();
     Ok(match t.1 {
         None => LogEntry::Noop { term },
-        Some(Branch2::A(command)) => LogEntry::Command { term, command },
-        Some(Branch2::B(config)) => LogEntry::Config { term, config },
+        Some(Branch3::A(command)) => LogEntry::Command { term, command },
+        Some(Branch3::B(config)) => LogEntry::Config { term, config },
+        Some(Branch3::C(successor)) => LogEntry::Retire { term, successor: NodeId::new(successor) },
     })
 });
 
@@ -46,6 +46,7 @@ pub struct LogEntryEncoder {
                 Oneof<(
                     FieldEncoder<F2, BytesEncoder>,
                     MessageFieldEncoder<F3, PreEncode<ClusterConfigEncoder>>,
+                    FieldEncoder<F4, StringEncoder>,
                 )>,
             >,
         )>,
@@ -53,8 +54,9 @@ pub struct LogEntryEncoder {
 }
 impl_sized_message_encode!(LogEntryEncoder, LogEntry, |item: Self::Item| match item {
     LogEntry::Noop { term } => (term.as_u64(), None),
-    LogEntry::Command { term, command } => (term.as_u64(), Some(Branch2::A(command))),
-    LogEntry::Config { term, config } => (term.as_u64(), Some(Branch2::B(config))),
+    LogEntry::Command { term, command } => (term.as_u64(), Some(Branch3::A(command))),
+    LogEntry::Config { term, config } => (term.as_u64(), Some(Branch3::B(config))),
+    LogEntry::Retire { term, successor } => (term.as_u64(), Some(Branch3::C(successor.into_string()))),
 });
 
 /// Decoder for `LogPrefix`.
