@@ -18,3 +18,7 @@ bytecodec = "0.4"
 protobuf_codec = "0.2"
 raftlog = "0.6"
 trackable = "0.2"
+
+[patch.crates-io]
+bytecodec = { git = "https://github.com/koba-e964/bytecodec", branch = "feature/tokio-1.0" }
+raftlog = { git = "https://github.com/frugalos/raftlog", branch = "feature/tokio-1.0" }
